@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 19:19:25 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/18 11:45:22 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/18 11:54:03 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,8 @@ ft_cmds
 ft_pipes_error
 ft_no_way
 # Process tests------Success--------------------------------------------------- #
-ft_mult_ways
 ft_valid_maps_part_1
+ft_mult_ways
 
 # Display results------------------------------------------------------------- #
 ft_logs

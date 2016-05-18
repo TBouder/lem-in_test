@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/18 11:49:27 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/18 12:13:53 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,8 +136,7 @@ ft_mult_ways ()
 	do
 		leak=$(ft_leaks $EXEC/lem-in < $f)
 		lik=$?
-		len=-$(cat lem-in_maps/multiple_ways_trace/$(basename $f) | wc -l | tr -d ' ')
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/multiple_ways_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f' | head '$len')')
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/multiple_ways_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f')')
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done
@@ -149,12 +148,14 @@ ft_valid_maps_part_1 ()
 	printf "%-50s" "$yellow""valid_maps_part_1 : ""$normal"
 	for f in lem-in_maps/valid_maps_part_1/*
 	do
-		leak=$(ft_leaks $EXEC/lem-in -s < $f)
+		leak=$(ft_leaks $EXEC/lem-in < $f)
+		err=$(ft_leaks $EXEC/lem-in < $f)
+		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
 		lik=$?
-		# len=-$(cat lem-in_maps/valid_maps_part_1/$(basename $f) | wc -l | tr -d ' ')
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1/'$(basename $f)') <('$EXEC'/lem-in -s < '$f')')
-		echo $comm
-		# comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1/'$(basename $f)') <('$EXEC'/lem-in -s < '$f' | head '$len')')
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f')')
+		if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt ]]; then
+			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt') <('$EXEC'/lem-in < '$f')')
+		fi
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done
