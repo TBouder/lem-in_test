@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 15:29:27 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/17 15:53:48 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/19 16:43:16 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,12 +35,12 @@ ft_makefile ()
 		make -C $EXEC/
 		make2=$(make -C $EXEC/)
 		make -C $EXEC/ clean
-		# make3=$(make)
-		# make re
-		make -C $EXEC/
-		# if [ "$make2" = "make: Nothing to be done for \`all'." -a "$make3" = "make: Nothing to be done for \`all'." ] ; then
-		if [ "$make2" = "make: Nothing to be done for \`all'." ] ; then
+		make3=$(make -C $EXEC/)
+		make -C $EXEC/ re
+		if [ "$make2" = "make: Nothing to be done for \`all'." -a "$make3" = "" ] ; then
 			echo "Makefile : \033[32;1mOK\033[00;0m"
+		elif [ "$make2" = "make: Nothing to be done for \`all'." -a "$make3" = "make: Nothing to be done for \`all'." ] ; then
+			echo "Makefile : \033[38;5;166m~~\033[00;0m"
 		else
 			echo "Makefile : \033[31;1mKO\033[00;0m"
 		fi
