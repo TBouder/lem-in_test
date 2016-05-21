@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/18 12:13:53 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/19 20:12:27 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ ft_errors ()
 
 ft_comments ()
 {
+	err="NULL"
 	printf "%-50s" "$yellow""comments : ""$normal"
 	for f in lem-in_maps/comment/*
 	do
@@ -75,6 +76,7 @@ ft_comments ()
 
 ft_cmds ()
 {
+	err="NULL"
 	printf "%-50s" "$yellow""cmd : ""$normal"
 	for f in lem-in_maps/cmd/*
 	do
@@ -98,6 +100,7 @@ ft_cmds ()
 
 ft_pipes_error ()
 {
+	err="NULL"
 	printf "%-50s" "$yellow""pipes_error : ""$normal"
 	for f in lem-in_maps/pipes_error/*
 	do
@@ -131,6 +134,7 @@ ft_no_way ()
 
 ft_mult_ways ()
 {
+	err="NULL"
 	printf "%-50s" "$yellow""multiple_ways : ""$normal"
 	for f in lem-in_maps/multiple_ways/*
 	do
