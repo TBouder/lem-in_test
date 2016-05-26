@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/19 20:12:27 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/24 22:02:53 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,9 +47,10 @@ ft_errors ()
 		printf "%-50s" "$yellow$(basename $d) : $normal"
 		for f in lem-in_maps/error/$(basename $d)/*
 		do
+			leak=$(ft_leaks $EXEC/lem-in < $f)
+			lik=$?
 			err=$(ft_leaks $EXEC/lem-in < $f)
 			len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
-			lik=$?
 			ft_signal $lik "$err" $i $f
 			count=$((count + 1))
 		done
@@ -122,8 +123,8 @@ ft_no_way ()
 	for f in lem-in_maps/no_way/*
 	do
 		err=$(ft_leaks $EXEC/lem-in < $f)
-		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
 		lik=$?
+		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
 		ft_signal $lik "$err" $i $f $len
 		count=$((count + 1))
 	done
@@ -153,9 +154,9 @@ ft_valid_maps_part_1 ()
 	for f in lem-in_maps/valid_maps_part_1/*
 	do
 		leak=$(ft_leaks $EXEC/lem-in < $f)
+		lik=$?
 		err=$(ft_leaks $EXEC/lem-in < $f)
 		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
-		lik=$?
 		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f')')
 		if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt ]]; then
 			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt') <('$EXEC'/lem-in < '$f')')
