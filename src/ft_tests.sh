@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/24 22:02:53 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/26 18:19:03 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,16 +42,16 @@ ft_signal ()
 ft_errors ()
 {
 	comm="NULL"
+	len=0
 	for d in lem-in_maps/error/*
 	do
 		printf "%-50s" "$yellow$(basename $d) : $normal"
 		for f in lem-in_maps/error/$(basename $d)/*
 		do
-			leak=$(ft_leaks $EXEC/lem-in < $f)
-			lik=$?
 			err=$(ft_leaks $EXEC/lem-in < $f)
+			lik=$?
 			len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
-			ft_signal $lik "$err" $i $f
+			ft_signal $lik "$err" $i $f $len
 			count=$((count + 1))
 		done
 		printf "\n"
@@ -59,89 +59,15 @@ ft_errors ()
 	err=""
 }
 
-ft_comments ()
+ft_cmp_to_trace ()
 {
 	err="NULL"
-	printf "%-50s" "$yellow""comments : ""$normal"
-	for f in lem-in_maps/comment/*
-	do
-		leak=$(ft_leaks $EXEC/lem-in < $f)
-		lik=$?
-		len=-$(cat $f | wc -l | tr -d ' ')
-		comm=$(bash -c 'diff -u <(cat '$f') <('$EXEC'/lem-in < '$f' | head '$len')')
-		ft_signal $lik "$comm" $i $f
-		count=$((count + 1))
-	done
-	printf "\n"
-}
-
-ft_cmds ()
-{
-	err="NULL"
-	printf "%-50s" "$yellow""cmd : ""$normal"
-	for f in lem-in_maps/cmd/*
-	do
-		leak=$(ft_leaks $EXEC/lem-in < $f)
-		lik=$?
-		if [ "$(basename $f)" = "cmd_before_end" ]; then
-			len=-$(cat lem-in_maps/cmd_trace/cmd_trace_beta | wc -l | tr -d ' ')
-			comm=$(bash -c 'diff -u <(cat '$MAPS'/cmd_trace/cmd_trace_beta) <('$EXEC'/lem-in < '$f' | head '$len')')
-		elif [ "$(basename $f)" == "cmd_before_start" ]; then
-			len=-$(cat lem-in_maps/cmd_trace/cmd_trace_omega | wc -l | tr -d ' ')
-			comm=$(bash -c 'diff -u <(cat '$MAPS'/cmd_trace/cmd_trace_omega) <('$EXEC'/lem-in < '$f' | head '$len')')
-		else
-			len=-$(cat lem-in_maps/cmd_trace/cmd_trace_alpha | wc -l | tr -d ' ')
-			comm=$(bash -c 'diff -u <(cat '$MAPS'/cmd_trace/cmd_trace_alpha) <('$EXEC'/lem-in < '$f' | head '$len')')
-		fi
-		ft_signal $lik "$comm" $i $f
-		count=$((count + 1))
-	done
-	printf "\n"
-}
-
-ft_pipes_error ()
-{
-	err="NULL"
-	printf "%-50s" "$yellow""pipes_error : ""$normal"
-	for f in lem-in_maps/pipes_error/*
-	do
-		leak=$(ft_leaks $EXEC/lem-in < $f)
-		lik=$?
-		len=-$(cat lem-in_maps/pipes_error_trace/$(basename $f) | wc -l | tr -d ' ')
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/pipes_error_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f' | head '$len')')
-		ft_signal $lik "$comm" $i $f
-		count=$((count + 1))
-	done
-	printf "\n"
-}
-
-ft_no_way ()
-{
-	comm="NULL"
-	len=0
-	printf "%-50s" "$yellow""no_way : ""$normal"
-	for f in lem-in_maps/no_way/*
+	printf "%-50s" "$yellow""$1 : ""$normal"
+	for f in lem-in_maps/$1/*
 	do
 		err=$(ft_leaks $EXEC/lem-in < $f)
 		lik=$?
-		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
-		ft_signal $lik "$err" $i $f $len
-		count=$((count + 1))
-	done
-	printf "\n"
-	len=0
-	err=""
-}
-
-ft_mult_ways ()
-{
-	err="NULL"
-	printf "%-50s" "$yellow""multiple_ways : ""$normal"
-	for f in lem-in_maps/multiple_ways/*
-	do
-		leak=$(ft_leaks $EXEC/lem-in < $f)
-		lik=$?
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/multiple_ways_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f')')
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/'$1'_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in < '$f')')
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done
@@ -150,17 +76,16 @@ ft_mult_ways ()
 
 ft_valid_maps_part_1 ()
 {
+	err="NULL"
 	printf "%-50s" "$yellow""valid_maps_part_1 : ""$normal"
 	for f in lem-in_maps/valid_maps_part_1/*
 	do
-		leak=$(ft_leaks $EXEC/lem-in < $f)
-		lik=$?
 		err=$(ft_leaks $EXEC/lem-in < $f)
-		len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)') <('$EXEC'/lem-in < '$f')')
-		if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt ]]; then
-			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt') <('$EXEC'/lem-in < '$f')')
-		fi
+		lik=$?
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in < '$f')')
+		# if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt ]]; then
+			# comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt') <('$EXEC'/lem-in < '$f')')
+		# fi
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done

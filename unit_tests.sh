@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 19:19:25 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/19 20:13:04 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/26 18:14:50 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,13 +38,12 @@ ft_arg $@
 
 # Process tests------Error---------------------------------------------------- #
 ft_errors
-ft_comments
-ft_cmds
-ft_pipes_error
-ft_no_way
+ft_cmp_to_trace comment
+ft_cmp_to_trace cmd
+ft_cmp_to_trace pipes_error
 # Process tests------Success--------------------------------------------------- #
-# ft_valid_maps_part_1
-ft_mult_ways
+ft_cmp_to_trace multiple_ways
+ft_valid_maps_part_1
 
 # Display results------------------------------------------------------------- #
 ft_logs
