@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/26 18:19:03 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/27 14:03:12 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,9 +83,9 @@ ft_valid_maps_part_1 ()
 		err=$(ft_leaks $EXEC/lem-in < $f)
 		lik=$?
 		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in < '$f')')
-		# if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt ]]; then
-			# comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt') <('$EXEC'/lem-in < '$f')')
-		# fi
+		if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt_trace ]]; then
+			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt_trace') <('$EXEC'/lem-in < '$f')')
+		fi
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done
