@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:58:50 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/30 14:33:56 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/30 17:20:18 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,9 +48,9 @@ ft_errors ()
 		printf "%-50s" "$yellow$(basename $d) : $normal"
 		for f in lem-in_maps/error/$(basename $d)/*
 		do
-			err=$(ft_leaks $EXEC/lem-in < $f)
+			err=$(ft_leaks $EXEC/lem-in -dic < $f)
 			lik=$?
-			len=$($EXEC/lem-in < $f | wc -l | tr -d ' ')
+			len=$($EXEC/lem-in -dic < $f | wc -l | tr -d ' ')
 			ft_signal $lik "$err" $i $f $len
 			count=$((count + 1))
 		done
@@ -65,9 +65,9 @@ ft_cmp_to_trace ()
 	printf "%-50s" "$yellow""$1 : ""$normal"
 	for f in lem-in_maps/$1/*
 	do
-		err=$(ft_leaks $EXEC/lem-in < $f)
+		err=$(ft_leaks $EXEC/lem-in -dic < $f)
 		lik=$?
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/'$1'_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in < '$f')')
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/'$1'_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in -dic < '$f')')
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
 	done
@@ -80,11 +80,11 @@ ft_valid_maps_part_1 ()
 	printf "%-50s" "$yellow""valid_maps_part_1 : ""$normal"
 	for f in lem-in_maps/valid_maps_part_1/*
 	do
-		err=$(ft_leaks $EXEC/lem-in < $f)
+		err=$(ft_leaks $EXEC/lem-in -dic < $f)
 		lik=$?
-		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in < '$f')')
+		comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)'_trace) <('$EXEC'/lem-in -dic < '$f')')
 		if [[ $comm != "" && -e $MAPS/valid_maps_part_1_trace/$(basename $f)_alt_trace ]]; then
-			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt_trace') <('$EXEC'/lem-in < '$f')')
+			comm=$(bash -c 'diff -u <(cat '$MAPS'/valid_maps_part_1_trace/'$(basename $f)_alt_trace') <('$EXEC'/lem-in -dic < '$f')')
 		fi
 		ft_signal $lik "$comm" $i $f
 		count=$((count + 1))
