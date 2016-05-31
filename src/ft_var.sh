@@ -6,7 +6,7 @@
 #    By: tbouder <tbouder@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 15:30:09 by tbouder           #+#    #+#              #
-#    Updated: 2016/05/30 17:20:54 by tbouder          ###   ########.fr        #
+#    Updated: 2016/05/31 23:58:14 by tbouder          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ leaks="KO"
 ft_leaks()
 {
 	if [[ $leaks = "OK" ]]; then
-		~/.brew/Cellar/valgrind/3.11.0/bin/valgrind -q --leak-check=full --error-exitcode=42 --suppressions=src/false_pos_valgrind.supp $1
-		# valgrind -q --leak-check=full --error-exitcode=42 --suppressions=src/false_pos_valgrind.supp $1
+		# ~/.brew/Cellar/valgrind/3.11.0/bin/valgrind -q --leak-check=full --error-exitcode=42 --suppressions=src/false_pos_valgrind.supp $1
+		valgrind -q --leak-check=full --error-exitcode=42 --suppressions=src/false_pos_valgrind.supp $1
 	else
 		$1
 	fi
